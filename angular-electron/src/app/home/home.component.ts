@@ -1,6 +1,7 @@
+import { ElectronService } from './../core/services/electron/electron.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SerialPortService } from '../serial-port.service';
+// import { SerialPortService } from '../serial-port.service';
 
 @Component({
   selector: 'app-home',
@@ -10,16 +11,16 @@ import { SerialPortService } from '../serial-port.service';
 export class HomeComponent implements OnInit {
 
   constructor(
-      private router: Router, 
-      private serialPortService: SerialPortService,
-      ) {   }
+    private router: Router,
+    private electronService: ElectronService,
+  ) { }
 
   ngOnInit(): void {
     console.log('HomeComponent INIT');
-    this.serialPortService.serialPort.list().then(ports=>{
-        ports.forEach(port=>{
-            console.log(port);
-        })
+    this.electronService.serialPort.list().then(ports => {
+      ports.forEach(port => {
+        console.log(port);
+      })
     })
 
   }

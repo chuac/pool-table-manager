@@ -1,4 +1,6 @@
 {
+  "buildDependenciesFromSource": true,
+  "npmRebuild": false,
   "asar": false,
   "directories": {
     "output": "release/"

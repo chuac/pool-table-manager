@@ -1,2 +1,5 @@
 # Node dependency directories
 node_modules/
+
+# Node gyp config file. If we don't commit this to Git then it will use what's on your system (or default)
+*.gypi
