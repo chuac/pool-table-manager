@@ -1,17 +1,20 @@
 // import { Buffer } from 'buffer';
 const Buffer = require('buffer').Buffer;
 const SerialPort = require('serialport');
-const ByteLength = require('@serialport/parser-byte-length')
+const ByteLength = require('@serialport/parser-byte-length');
 const Readline = require('@serialport/parser-readline');
 
 // define the serial port
-const port = new SerialPort('COM7', { // check device manager for COM number
-    baudRate: 9600
+const port = new SerialPort('COM1', {
+  // check device manager for COM number
+  baudRate: 9600,
 });
 console.log('Program listening');
 
 // read data from serial port normally
-port.on('data', (data) => console.log('Data:', Buffer.from(data, 'hex').toString('hex')));
+port.on('data', (data) =>
+  console.log('Data:', Buffer.from(data, 'hex').toString('hex'))
+);
 // port.on('data', (data) => console.log('Data:', data));
 // port.on('data', (data) => console.log('Data:', Buffer.from(data, 'hex').toString('utf8')));
 
