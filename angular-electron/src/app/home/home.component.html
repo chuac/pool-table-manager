@@ -1,7 +1,24 @@
 <div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+	<ng-container *ngIf="tables$ | async as tables">
+		<ng-container *ngFor="let table of tables; index as i">
+			<h1>
+				Table Number: {{ i + 1 }}
+			</h1>
 
-  <a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a>
+			<h2>
+				Switched on?: {{ table.switchedOn }}
+			</h2>
+
+			<h2 *ngIf="table.switchedOn">
+				Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }}
+			</h2>
+
+			<h2 *ngIf="table.switchedOn">
+				Cost: ${{ table.timeStarted | timeToCost: i + 1 }}
+			</h2>
+
+		</ng-container>
+	</ng-container>
+
+	<!-- <a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a> -->
 </div>
