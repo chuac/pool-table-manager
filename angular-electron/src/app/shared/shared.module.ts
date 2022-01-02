@@ -6,10 +6,24 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
 import { FormsModule } from '@angular/forms';
+import { TimeToCostPipe } from './pipes/time-to-cost.pipe';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective],
-  imports: [CommonModule, TranslateModule, FormsModule],
-  exports: [TranslateModule, WebviewDirective, FormsModule]
+	imports: [
+		CommonModule,
+		TranslateModule,
+		FormsModule,
+	],
+	declarations: [
+		TimeToCostPipe,
+		PageNotFoundComponent,
+		WebviewDirective,
+	],
+	exports: [
+		TimeToCostPipe,
+		TranslateModule,
+		WebviewDirective,
+		FormsModule,
+	],
 })
-export class SharedModule {}
+export class SharedModule { }

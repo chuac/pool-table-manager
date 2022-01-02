@@ -1,3 +1,4 @@
+import { DateFnsModule } from 'ngx-date-fns';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -7,7 +8,14 @@ import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule]
+	imports: [
+		CommonModule,
+		SharedModule,
+		HomeRoutingModule,
+		DateFnsModule,
+	],
+	declarations: [
+		HomeComponent,
+	],
 })
-export class HomeModule {}
+export class HomeModule { }
