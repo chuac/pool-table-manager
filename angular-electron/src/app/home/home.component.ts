@@ -11,6 +11,7 @@ import { PortInfo } from 'serialport';
 	styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+	clock$ = this.tableService.clock$;
 	tables$ = this.tableService.tables$;
 
 	constructor(

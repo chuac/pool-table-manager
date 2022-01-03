@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
 import { FormsModule } from '@angular/forms';
 import { TimeToCostPipe } from './pipes/time-to-cost.pipe';
+import { HoursAndMinutesAgoPipe } from './pipes/hours-and-minutes-ago.pipe';
 
 @NgModule({
 	imports: [
@@ -16,11 +17,13 @@ import { TimeToCostPipe } from './pipes/time-to-cost.pipe';
 	],
 	declarations: [
 		TimeToCostPipe,
+		HoursAndMinutesAgoPipe,
 		PageNotFoundComponent,
 		WebviewDirective,
 	],
 	exports: [
 		TimeToCostPipe,
+		HoursAndMinutesAgoPipe,
 		TranslateModule,
 		WebviewDirective,
 		FormsModule,
