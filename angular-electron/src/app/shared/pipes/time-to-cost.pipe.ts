@@ -6,9 +6,9 @@ import { differenceInMinutes } from 'date-fns';
 })
 export class TimeToCostPipe implements PipeTransform {
 
-	transform(value: Date, tableNumber: number): any {
-		const costPerHour = 16.0;
-		const difference = differenceInMinutes(new Date(), value);
+	transform(value: Date, clockDate: Date, tableNumber: number): number {
+		const costPerHour = 16.0; // TODO: Hardcoded cost per hour for now
+		const difference = differenceInMinutes(clockDate, value);
 
 		return difference / 60 * costPerHour;
 	}

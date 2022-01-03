@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // Data that we get from the light switch box (COM port), in Hex format
 export enum TableState {
 	ONE_ON = '41',
