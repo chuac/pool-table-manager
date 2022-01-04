@@ -1,4 +1,6 @@
+import { TableState } from './table-state.enum';
+
 export interface Table {
 	timeStarted: Date;
-	switchedOn: boolean;
+	state: TableState;
 }
