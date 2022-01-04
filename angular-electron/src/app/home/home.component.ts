@@ -1,30 +1,24 @@
 import { TableService } from './../shared/services/table.service';
-import { ElectronService } from './../core/services/electron/electron.service';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SerialPort } from 'electron';
-import { PortInfo } from 'serialport';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TableState } from '../shared/models/table-state.enum';
 
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.component.html',
-	styleUrls: ['./home.component.scss']
+	styleUrls: ['./home.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
 	clock$ = this.tableService.clock$;
 	tables$ = this.tableService.tables$;
 
+	tableState = TableState;
+
 	constructor(
-		private router: Router,
-		private electronService: ElectronService,
 		private tableService: TableService,
 	) { }
 
 	ngOnInit(): void {
 		console.log('HomeComponent INIT');
-
-
-
 	}
-
 }

@@ -2,6 +2,7 @@ import { BehaviorSubject, combineLatest, interval, map, Observable, share } from
 import { Injectable } from '@angular/core';
 import { Table } from '../models/table.model';
 import { subMinutes } from 'date-fns';
+import { TableState } from '../models/table-state.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,15 +32,18 @@ export class TableService {
 
 		for (let i = 0; i < this.numberOfTables; i++) {
 			let timeStarted: Date = null;
-			const switchedOn = Math.random() > 0.5 ? true : false;
+			let tableState = Math.random() > 0.5 ? TableState.On : TableState.Off;
 
-			if (switchedOn) {
+			// Small chance for a randomly generated table to be in Clean mode
+			tableState = Math.random() > 0.85 ? TableState.Clean : tableState;
+
+			if (tableState !== TableState.Off) {
 				const minutesStartedAgo = Math.floor(Math.random() * 240);
 				timeStarted = subMinutes(new Date().setSeconds(0), minutesStartedAgo); // purposely ignoring seconds
 			}
 
 			tables.push({
-				switchedOn,
+				state: tableState,
 				timeStarted,
 			});
 		}

@@ -9,15 +9,15 @@
 			</h1>
 
 			<h2>
-				Switched on?: {{ table.switchedOn }}
+				Table State: {{ table.state }}
 			</h2>
 
-			<h2 *ngIf="table.switchedOn">
+			<h2 *ngIf="table.state !== tableState.Off">
 				Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} or
 				{{ table.timeStarted | hoursAndMinutesAgo: clock }}
 			</h2>
 
-			<h2 *ngIf="table.switchedOn">
+			<h2 *ngIf="table.state !== tableState.Off">
 				Cost: ${{ table.timeStarted | timeToCost: clock : i + 1 }}
 			</h2>
 
