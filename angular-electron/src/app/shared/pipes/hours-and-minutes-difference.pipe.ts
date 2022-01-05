@@ -2,20 +2,19 @@ import { differenceInHours, differenceInMinutes } from 'date-fns';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-	name: 'hoursAndMinutesAgo'
+	name: 'hoursAndMinutesDifference'
 })
-export class HoursAndMinutesAgoPipe implements PipeTransform {
-
-	transform(value: Date, clockDate: Date): any {
+export class HoursAndMinutesDifferencePipe implements PipeTransform {
+	transform(value: Date, clockDate: Date): string {
 		const minutesAgo = differenceInMinutes(clockDate, value);
 
 		if (minutesAgo > 60) {
 			const hoursAgo = differenceInHours(clockDate, value);
 			const minutesRemainder = minutesAgo % 60;
 
-			return `${hoursAgo} hours and ${minutesRemainder} minutes ago`;
+			return `${hoursAgo} hours and ${minutesRemainder} minutes`;
 		}
 
-		return `${minutesAgo} minutes ago`;
+		return `${minutesAgo} minutes`;
 	}
 }

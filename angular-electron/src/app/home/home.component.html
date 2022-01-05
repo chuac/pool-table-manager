@@ -1,9 +1,9 @@
-<div>
-	<ng-container *ngIf="clock$ | async as clock">
-		<h1>
-			{{ clock | dfnsFormat: 'kk:mm:ss' }}
-		</h1>
-		<ng-container *ngFor="let table of (tables$ | async) as tables; index as i">
+<ng-container *ngIf="clock$ | async as clock">
+	<h1>
+		{{ clock | dfnsFormat: 'kk:mm:ss' }}
+	</h1>
+	<ng-container *ngFor="let table of (tables$ | async) as tables; index as i">
+		<ng-container *ngIf="table.state !== tableState.Disabled">
 			<h1>
 				Table Number: {{ i + 1 }}
 			</h1>
@@ -14,14 +14,14 @@
 
 			<h2 *ngIf="table.state !== tableState.Off">
 				Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} or
-				{{ table.timeStarted | hoursAndMinutesAgo: clock }}
+				{{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
 			</h2>
 
 			<h2 *ngIf="table.state !== tableState.Off">
 				Cost: ${{ table.timeStarted | timeToCost: clock : i + 1 }}
 			</h2>
-
 		</ng-container>
 	</ng-container>
+</ng-container>
 
-</div>
+<pending-transaction></pending-transaction>
