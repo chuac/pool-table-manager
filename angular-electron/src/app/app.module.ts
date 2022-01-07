@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { DateFnsModule } from 'ngx-date-fns';
 import { DateFnsConfigurationService } from 'ngx-date-fns';
 import { enAU } from 'date-fns/locale';
 
@@ -16,6 +15,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HomeModule } from './home/home.module';
 import { DetailModule } from './detail/detail.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 import { AppComponent } from './app.component';
 
@@ -35,6 +35,7 @@ australianDateConfig.setLocale(enAU);
 		SharedModule,
 		HomeModule,
 		DetailModule,
+		TransactionModule,
 		AppRoutingModule,
 		TranslateModule.forRoot({
 			loader: {
