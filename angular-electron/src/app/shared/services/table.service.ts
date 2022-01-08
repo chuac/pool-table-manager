@@ -27,7 +27,7 @@ export class TableService {
 		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$, this.switchboardService.tableStateChanged$])
 			.pipe(
 				map(([tables, _, tableStateChanged]) => {
-                    this.processTableChanged(tables, tableStateChanged);
+                    this.processTableChanged(tables, tableStateChanged);  // Added tables parameter here 
                     return tables
                 })
 			);
@@ -43,7 +43,7 @@ export class TableService {
 
         const tableNumberIndex = Object.values(TableNumberIndex)[hexCodeIndex]
         
-        console.log(tables[tableNumberIndex].tableState);               
+        console.log(tables[tableNumberIndex].state);   // If I remove the 'state' it will read the object but if I leave it like this it won't read it  
     }
 
 
