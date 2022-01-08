@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Table } from '../models/table.model';
 import { subMinutes } from 'date-fns';
 import { TableState } from '../models/table-state.enum';
+import { SwitchboardService } from './switchboard.service';
+import { TableStateChanged } from '../models/table-state-changed.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,36 +20,64 @@ export class TableService {
 
 	private numberOfTables = 27; // TODO: Make this configurable
 
-	constructor() {
-		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$])
+	constructor(
+        private readonly switchboardService: SwitchboardService
+    ) {
+		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$, this.switchboardService.tableStateChanged$])
 			.pipe(
-				map(([tables, _]) => tables)
+				map(([tables, _, tableStateChanged]) => {
+                    this.processTableChanged(tableStateChanged);
+                    return tables
+                })
 			);
 
-		this.initAndAddDummyDataToTables();
+		// this.initAndAddDummyDataToTables();
+        this.addTables();
 	}
 
-	private initAndAddDummyDataToTables(): void {
-		const tables = this.tablesSubject.value;
+    private processTableChanged(tableStateChanged: TableStateChanged){
+        console.log(tableStateChanged);
+    }
 
-		for (let i = 0; i < this.numberOfTables; i++) {
-			let timeStarted: Date = null;
-			let tableState = Math.random() > 0.5 ? TableState.On : TableState.Off;
 
-			// Small chance for a randomly generated table to be in Clean mode
-			tableState = Math.random() > 0.85 ? TableState.Clean : tableState;
+    private addTables(): void {
+        const tables = this.tablesSubject.value;
 
-			if (tableState !== TableState.Off) {
-				const minutesStartedAgo = Math.floor(Math.random() * 240);
-				timeStarted = subMinutes(new Date().setSeconds(0), minutesStartedAgo); // purposely ignoring seconds
-			}
+        for (let i = 0; i < this.numberOfTables; i++) {
+            let timeStarted: Date= null;
+            let tableState = TableState.Off;
 
-			tables.push({
-				state: tableState,
-				timeStarted,
-			});
-		}
+            tables.push({
+                state: tableState,
+                timeStarted
+            })
+    }
 
-		this.tablesSubject.next(tables);
-	}
+    this.tablesSubject.next(tables);
+    }
+
+
+	// private initAndAddDummyDataToTables(): void {
+	// 	const tables = this.tablesSubject.value;
+
+	// 	for (let i = 0; i < this.numberOfTables; i++) {
+	// 		let timeStarted: Date = null;
+	// 		let tableState = Math.random() > 0.5 ? TableState.On : TableState.Off;
+
+	// 		// Small chance for a randomly generated table to be in Clean mode
+	// 		tableState = Math.random() > 0.85 ? TableState.Clean : tableState;
+
+	// 		if (tableState !== TableState.Off) {
+	// 			const minutesStartedAgo = Math.floor(Math.random() * 240);
+	// 			timeStarted = subMinutes(new Date().setSeconds(0), minutesStartedAgo); // purposely ignoring seconds
+	// 		}
+
+	// 		tables.push({
+	// 			state: tableState,
+	// 			timeStarted,
+	// 		});
+	// 	}
+
+	// 	this.tablesSubject.next(tables);
+	// }
 }

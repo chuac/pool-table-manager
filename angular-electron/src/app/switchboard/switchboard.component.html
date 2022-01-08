@@ -1,0 +1,5 @@
+<div>
+	<!-- <button #btn ng-click="changeTableState()">Table 1</button>
+	<button (click)="testChange()">Table 2</button> -->
+	<button (click)="tableStateChanged(table)" *ngFor="let table of allTables">Table {{ table }}</button>
+</div>
