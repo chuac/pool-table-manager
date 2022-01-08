@@ -5,6 +5,7 @@ import { subMinutes } from 'date-fns';
 import { TableState } from '../models/table-state.enum';
 import { SwitchboardService } from './switchboard.service';
 import { TableStateChanged } from '../models/table-state-changed.enum';
+import { TableNumberIndex } from '../models/table-number-index.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,17 +27,23 @@ export class TableService {
 		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$, this.switchboardService.tableStateChanged$])
 			.pipe(
 				map(([tables, _, tableStateChanged]) => {
-                    this.processTableChanged(tableStateChanged);
+                    this.processTableChanged(tables, tableStateChanged);
                     return tables
                 })
 			);
+            
+        this.addTables();
 
 		// this.initAndAddDummyDataToTables();
-        this.addTables();
+        
 	}
 
-    private processTableChanged(tableStateChanged: TableStateChanged){
-        console.log(tableStateChanged);
+    private processTableChanged(tables, tableStateChanged: TableStateChanged){
+        const hexCodeIndex = Object.values(TableStateChanged).indexOf(tableStateChanged)
+
+        const tableNumberIndex = Object.values(TableNumberIndex)[hexCodeIndex]
+        
+        console.log(tables[tableNumberIndex].tableState);               
     }
 
 
