@@ -8,13 +8,14 @@ import { TableStateChanged } from '../models/table-state-changed.enum';
 export class SwitchboardService {
     tableStateChanged$: Observable<TableStateChanged>;
 
-    private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>(null);
+    private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>(TableStateChanged.ONE_OFF);
 
   constructor() {
       this.tableStateChanged$ = this.tableStateChangedSubject.asObservable();
   }
 
   addTableStateChanged(tableStateChanged: TableStateChanged){
-    this.tableStateChangedSubject.next(tableStateChanged)
+    this.tableStateChangedSubject.next(tableStateChanged);
   }
+  
 }

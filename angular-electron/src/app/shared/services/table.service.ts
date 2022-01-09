@@ -24,26 +24,35 @@ export class TableService {
 	constructor(
         private readonly switchboardService: SwitchboardService
     ) {
+
 		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$, this.switchboardService.tableStateChanged$])
 			.pipe(
-				map(([tables, _, tableStateChanged]) => {
+				map(([tables, _, tableStateChanged]) => {                    
                     this.processTableChanged(tables, tableStateChanged);  // Added tables parameter here 
+                    
                     return tables
                 })
 			);
             
-        this.addTables();
+            this.addTables();
 
 		// this.initAndAddDummyDataToTables();
-        
 	}
 
+    
     private processTableChanged(tables, tableStateChanged: TableStateChanged){
         const hexCodeIndex = Object.values(TableStateChanged).indexOf(tableStateChanged)
 
         const tableNumberIndex = Object.values(TableNumberIndex)[hexCodeIndex]
+
+        let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off // Check if even or Odd to determine TableState
         
-        console.log(tables[tableNumberIndex].state);   // If I remove the 'state' it will read the object but if I leave it like this it won't read it  
+        let table = this.tablesSubject.value[tableNumberIndex]
+        
+        table.state = tableState
+        table.timeStarted = new Date()
+        
+        // console.log(tables[tableNumberIndex]);   // If I remove the 'state' it will read the object but if I leave it like this it won't read it  
     }
 
 
@@ -51,7 +60,7 @@ export class TableService {
         const tables = this.tablesSubject.value;
 
         for (let i = 0; i < this.numberOfTables; i++) {
-            let timeStarted: Date= null;
+            let timeStarted: Date = null;
             let tableState = TableState.Off;
 
             tables.push({
