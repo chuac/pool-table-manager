@@ -28,7 +28,7 @@ export class TableService {
 		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$, this.switchboardService.tableStateChanged$])
 			.pipe(
 				map(([tables, _, tableStateChanged]) => {                    
-                    this.processTableChanged(tables, tableStateChanged);  // Added tables parameter here 
+                    this.processTableChanged(tableStateChanged);  // Added tables parameter here 
                     
                     return tables
                 })
@@ -40,14 +40,14 @@ export class TableService {
 	}
 
     
-    private processTableChanged(tables, tableStateChanged: TableStateChanged){
+    private processTableChanged(tableStateChanged: TableStateChanged){
         const hexCodeIndex = Object.values(TableStateChanged).indexOf(tableStateChanged)
 
         const tableNumberIndex = Object.values(TableNumberIndex)[hexCodeIndex]
 
-        let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off // Check if even or Odd to determine TableState
+        // Check whether table is on or off, depending on its index in TableStateChanged enum
+        let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off  
         
-
         let table = this.tablesSubject.value[tableNumberIndex]        
         table.state = tableState
         table.timeStarted = new Date()
