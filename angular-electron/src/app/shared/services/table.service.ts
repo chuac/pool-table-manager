@@ -47,12 +47,10 @@ export class TableService {
 
         let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off // Check if even or Odd to determine TableState
         
-        let table = this.tablesSubject.value[tableNumberIndex]
-        
+
+        let table = this.tablesSubject.value[tableNumberIndex]        
         table.state = tableState
         table.timeStarted = new Date()
-        
-        // console.log(tables[tableNumberIndex]);   // If I remove the 'state' it will read the object but if I leave it like this it won't read it  
     }
 
 
