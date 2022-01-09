@@ -1,0 +1,19 @@
+<ng-container *ngIf="(pendingTransactions$ | async) as pendingTransactions">
+	<ng-container *ngIf="pendingTransactions?.length > 0">
+		<div class="pending-transaction">
+			<p>
+				Table number: {{ pendingTransactions[0].tableNumber }}
+			</p>
+			<p>
+				Time started: {{ pendingTransactions[0].timeStarted | dfnsFormat: 'kk:mm' }}
+			</p>
+			<p>
+				Time played: {{ pendingTransactions[0].timeStarted | hoursAndMinutesDifference:
+				pendingTransactions[0].timeEnded }} ago
+			</p>
+			<p>
+				Cost: ${{ pendingTransactions[0].cost }}
+			</p>
+		</div>
+	</ng-container>
+</ng-container>
