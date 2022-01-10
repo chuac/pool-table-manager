@@ -9,10 +9,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class SerialPortService {
 	tableStateChanged$: Observable<TableStateChanged>;
 
-	private tableStateChangedSubject: BehaviorSubject<TableStateChanged> = new BehaviorSubject<TableStateChanged>(null);
+	private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>('' as TableStateChanged);
 
 	constructor(
-		private electronService: ElectronService
+		private electronService: ElectronService,
 	) {
 		this.tableStateChanged$ = this.tableStateChangedSubject.asObservable();
 

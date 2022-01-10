@@ -10,7 +10,9 @@ import { TableState } from '../models/table-state.enum';
 export class TableService {
 	clock$ = interval(1000)
 		.pipe(
-			map(() => new Date()),
+			map(() => {
+				return new Date();
+			}),
 			share(),
 		); // TODO: Move this to a ClockService?
 	tables$: Observable<Array<Table>>;
@@ -21,7 +23,9 @@ export class TableService {
 	constructor() {
 		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.clock$])
 			.pipe(
-				map(([tables, _]) => tables)
+				map(([tables, _]) => {
+					return tables;
+				}),
 			);
 
 		this.initAndAddDummyDataToTables();
