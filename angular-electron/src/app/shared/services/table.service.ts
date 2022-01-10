@@ -26,9 +26,7 @@ export class TableService {
         this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.switchboardService.tableStateChanged$])
             .pipe(
                 map(([tables, tableStateChanged]) => {
-                    this.processTableChanged(tables, tableStateChanged);
-
-                    return tables;
+                    return this.processTableChanged(tables, tableStateChanged);
                 })
             );
 
