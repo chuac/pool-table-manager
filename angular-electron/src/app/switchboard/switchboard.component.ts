@@ -4,22 +4,22 @@ import { SwitchboardService } from '../shared/services/switchboard.service';
 
 
 @Component({
-  selector: 'switchboard',
-  templateUrl: './switchboard.component.html',
-  styleUrls: ['./switchboard.component.scss']
+    selector: 'switchboard',
+    templateUrl: './switchboard.component.html',
+    styleUrls: ['./switchboard.component.scss']
 })
-export class SwitchboardComponent implements  OnInit {
-    allTables = Object.keys(TableStateChanged)
+export class SwitchboardComponent implements OnInit {
+    allTables = Object.keys(TableStateChanged);
 
-  constructor(private readonly switchboardService: SwitchboardService) { 
-  }
+    constructor(private readonly switchboardService: SwitchboardService) {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  tableStateChanged(tableEnumKey: string){
-    // console.log(TableStateChanged[tableEnumKey])
+    tableStateChanged(tableEnumKey: string) {
+        // console.log(TableStateChanged[tableEnumKey])
 
-    this.switchboardService.addTableStateChanged(TableStateChanged[tableEnumKey]);
-  }
+        this.switchboardService.addTableStateChanged(TableStateChanged[tableEnumKey]);
+    }
 }

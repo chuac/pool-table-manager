@@ -3,19 +3,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TableStateChanged } from '../models/table-state-changed.enum';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SwitchboardService {
     tableStateChanged$: Observable<TableStateChanged>;
 
-    private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>(TableStateChanged.ONE_OFF);
+    private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>('' as TableStateChanged);
 
-  constructor() {
-      this.tableStateChanged$ = this.tableStateChangedSubject.asObservable();
-  }
+    constructor() {
+        this.tableStateChanged$ = this.tableStateChangedSubject.asObservable();
+    }
 
-  addTableStateChanged(tableStateChanged: TableStateChanged){
-    this.tableStateChangedSubject.next(tableStateChanged);
-  }
-  
+    addTableStateChanged(tableStateChanged: TableStateChanged) {
+        this.tableStateChangedSubject.next(tableStateChanged);
+    }
 }
