@@ -5,6 +5,36 @@
     "dist/**/*",
     "release/**/*"
   ],
+  "extends": [
+	"plugin:@typescript-eslint/recommended",
+	"plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "rules": {
+	"no-inline-comments": "off",
+	"comma-dangle": [
+		"error",
+		{
+			"arrays": "only-multiline",
+			"objects": "only-multiline",
+			"imports": "only-multiline",
+			"exports": "always",
+			"functions": "only-multiline"
+		}
+	],
+	"quotes": ["error", "single"],
+	"object-curly-spacing": ["error", "always"],
+	"space-before-function-paren": ["error", "never"],
+	"@typescript-eslint/no-explicit-any": "error",
+	"eqeqeq": ["error", "smart"],
+	"@typescript-eslint/member-ordering": "error",
+	"new-cap": "off",
+	"radix": "off",
+	"indent": ["error", "tab", { "SwitchCase": 1 }],
+	"no-multiple-empty-lines": ["error", { "max": 1 }],
+	"@typescript-eslint/type-annotation-spacing": "error",
+	"arrow-spacing": "error",
+	"arrow-body-style": ["error", "always"]
+  },
   "overrides": [
     {
       "files": [
