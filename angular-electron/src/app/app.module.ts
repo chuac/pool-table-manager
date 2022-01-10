@@ -9,18 +9,10 @@ import { enAU } from 'date-fns/locale';
 
 import { AppRoutingModule } from './app-routing.module';
 
-// NG Translate
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { HomeModule } from './home/home.module';
-import { DetailModule } from './detail/detail.module';
 import { TransactionModule } from './transaction/transaction.module';
 
 import { AppComponent } from './app.component';
-
-// AoT requires an exported function for factories
-const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 const australianDateConfig = new DateFnsConfigurationService();
 australianDateConfig.setLocale(enAU);
@@ -34,20 +26,14 @@ australianDateConfig.setLocale(enAU);
 		CoreModule,
 		SharedModule,
 		HomeModule,
-		DetailModule,
 		TransactionModule,
 		AppRoutingModule,
-		TranslateModule.forRoot({
-			loader: {
-				provide: TranslateLoader,
-				useFactory: httpLoaderFactory,
-				deps: [HttpClient]
-			}
-		}),
 	],
 	providers: [
 		{ provide: DateFnsConfigurationService, useValue: australianDateConfig },
 	],
-	bootstrap: [AppComponent]
+	bootstrap: [
+		AppComponent,
+	],
 })
 export class AppModule { }

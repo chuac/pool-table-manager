@@ -34,7 +34,9 @@ export class TransactionService {
 
 		// We could also simply pop from the start of the queue but I figured this way may be more robust
 		const newTransactions = this.pendingTransactionsSubject.value
-			.filter((transaction) => transaction !== transactionToCommit);
+			.filter((transaction) => {
+				return transaction !== transactionToCommit;
+			});
 
 		this.pendingTransactionsSubject.next(newTransactions);
 	}
