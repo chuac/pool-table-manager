@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 
 import { HomeComponent } from './home.component';
+import { SwitchboardComponent } from '../switchboard/switchboard.component';
 import { SharedModule } from '../shared/shared.module';
 import { TransactionModule } from '../transaction/transaction.module';
 
@@ -18,6 +19,7 @@ import { TransactionModule } from '../transaction/transaction.module';
 	],
 	declarations: [
 		HomeComponent,
+        SwitchboardComponent
 	],
 })
 export class HomeModule { }

@@ -1,0 +1,10 @@
+.switchboard-button {
+	height: 30px;
+	width: 150px;
+	margin: 5px 0 5px 0;
+}
+
+.switchboard-button:nth-child(even) {
+	color: red;
+	margin-right: 20px;
+}
