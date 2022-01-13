@@ -1,28 +1,36 @@
+@import 'variables';
+
 :host {
 
 }
-* {
-    border: 1px solid red
-}
+//* {
+//    border: 1px solid red
+//}
 
 $table-height: 70px;
 
 .table-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin: 50px;
-    height: calc(#{$table-height}*10);
+    margin: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(9, 80px);
+    grid-auto-flow: column;
+    gap: 20px;
+
 
     .table{
-        flex: 1 1 50px;
-        height: $table-height;
-        width: 30%;
         display: flex;
+        justify-content: space-between;
+        background-color: $table-off;
 
-        &.table-on {
-            background-color: red;
-        }
+    & .table-number {
+        width: 70px;
+        height:auto;
+        text-align: center;
+    }     
+
+    & .running-cost {
+        max-width: 100px;
+    }
     }
 }

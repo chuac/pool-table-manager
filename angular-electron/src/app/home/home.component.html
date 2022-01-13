@@ -9,22 +9,24 @@
             <div class="table">
                 <ng-container *ngIf="table.state !== tableState.Disabled">
 
-                    <h1>
+                    <h1 class="table-number">
                         {{ i + 1 }}
                     </h1>
-
+                    <!--
                     <h2>
                         Table State: {{ table.state }}
-                    </h2>
+                    </h2>-->
+                    <div class="time-started">
+                        <h2 *ngIf="table.state !== tableState.Off" [class.table-on]="table.state !== tableState.Off">
+                            Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} or
+                            {{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
+                        </h2>
+                    </div>
 
-                    <h2 *ngIf="table.state !== tableState.Off" [class.table-on]="table.state !== tableState.Off">
-                        Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} or
-                        {{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
-                    </h2>
-
-                    <h2 *ngIf="table.state !== tableState.Off" [class.table-on]="table.state !== tableState.Off">
-                        Cost: ${{ table.timeStarted | timeToCost: clock : i + 1 }}
-                    </h2>
+                    <h1 *ngIf="table.state !== tableState.Off" [class.table-on]="table.state !== tableState.Off"
+                        class="running-cost">
+                        ${{ table.timeStarted | timeToCost: clock : i + 1 }}
+                    </h1>
 
                 </ng-container>
             </div>
