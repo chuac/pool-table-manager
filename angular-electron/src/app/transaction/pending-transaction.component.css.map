@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,oBAAoB,CAAC;EACpB,QAAQ,EAAE,KAAK;EACf,MAAM,EAAE,MAAM;EACd,IAAI,EAAE,IAAI;EACV,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,KAAK;EAEb,gBAAgB,EAAE,SAAS;CAC3B",
+    "sources": [
+        "pending-transaction.component.scss"
+    ],
+    "names": [],
+    "file": "pending-transaction.component.css"
+}
