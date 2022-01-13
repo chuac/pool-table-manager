@@ -27,7 +27,6 @@ $table-height: 60px;
         }
 
         & .table-number {
-            color: white;
             display: grid;
             place-items: center;
             width: $table-height;
@@ -36,10 +35,7 @@ $table-height: 60px;
         &.table-on {
         background-color: $table-on;
         border-radius: 10px;
-
-        & .table-number {
-            color: #000000;
-        }
+        color: #000000;
 
         & .time-started {
             display: grid;
