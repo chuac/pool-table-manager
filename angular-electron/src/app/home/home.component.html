@@ -2,7 +2,8 @@
     <h1>
         {{ clock | dfnsFormat: 'kk:mm:ss' }}
     </h1>
-    <switchboard></switchboard>
+    <button (click)="showSwitchboard = !showSwitchboard">Toggle switchboard</button>
+    <switchboard *ngIf="showSwitchboard"></switchboard>
     <div class="table-container">
 
         <ng-container *ngFor="let table of (tables$ | async) as tables; index as i">

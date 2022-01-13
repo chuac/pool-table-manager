@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
     tables$ = this.tableService.tables$;
     tableStateChanged$ = this.switchboardService.tableStateChanged$;
 
+    showSwitchboard = false;
+
     tableState = TableState;
 
     constructor(

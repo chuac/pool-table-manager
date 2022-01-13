@@ -1,11 +1,12 @@
 @import 'variables';
 
-:host {
+//:host {
 
-}
-//* {
-//    border: 1px solid red
 //}
+
+* {
+    border: 1px solid red
+}
 
 $table-height: 70px;
 
@@ -22,6 +23,7 @@ $table-height: 70px;
         display: flex;
         justify-content: space-between;
         background-color: $table-off;
+        border-radius: 10px;
 
     & .table-number {
         width: 70px;
