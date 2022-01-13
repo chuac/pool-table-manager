@@ -1,3 +1,28 @@
 :host {
 
 }
+* {
+    border: 1px solid red
+}
+
+$table-height: 70px;
+
+.table-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 50px;
+    height: calc(#{$table-height}*10);
+
+    .table{
+        flex: 1 1 50px;
+        height: $table-height;
+        width: 30%;
+        display: flex;
+
+        &.table-on {
+            background-color: red;
+        }
+    }
+}
