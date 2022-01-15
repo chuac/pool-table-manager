@@ -37,6 +37,10 @@ $table-height: 60px;
         border-radius: 10px;
         color: #000000;
 
+		&.table-clean {
+			background-color: $table-clean;
+		}
+
         & .time-started {
             display: grid;
             place-items: center;

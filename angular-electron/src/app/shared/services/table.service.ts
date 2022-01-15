@@ -27,11 +27,11 @@ export class TableService {
 	) {
 		this.tables$ = combineLatest([
 			this.tablesSubject.asObservable(),
-			this.switchboardService.tableStateChanged$,
-			this.userInputService.cleanMode$])
+			this.switchboardService.tableStateChanged$
+		])
 			.pipe(
-				map(([tables, tableStateChanged, cleanMode]) => {
-					return this.processTableChanged(tables, tableStateChanged, cleanMode);
+				map(([tables, tableStateChanged]) => {
+					return this.processTableChanged(tables, tableStateChanged);
 				})
 			);
 
@@ -41,7 +41,7 @@ export class TableService {
 	}
 
 
-	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged, cleanMode: boolean): Array<Table> {
+	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged): Array<Table> {
 		if (!tableStateChanged) {
 			return tables;
 		}
@@ -53,9 +53,12 @@ export class TableService {
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
 		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
 
-		if (tableState === TableState.On && cleanMode) {
-			tableState = TableState.Clean;
-		}
+		this.userInputService.cleanMode$
+			.subscribe((cleanMode) => {
+				if (tableState === TableState.On && cleanMode) {
+					tableState = TableState.Clean;
+				}
+			});
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
