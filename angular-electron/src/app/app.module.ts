@@ -18,22 +18,22 @@ const australianDateConfig = new DateFnsConfigurationService();
 australianDateConfig.setLocale(enAU);
 
 @NgModule({
-    declarations: [AppComponent],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        CoreModule,
-        SharedModule,
-        HomeModule,
-        TransactionModule,
-        AppRoutingModule,
-    ],
-    providers: [
-        { provide: DateFnsConfigurationService, useValue: australianDateConfig },
-    ],
-    bootstrap: [
-        AppComponent,
-    ],
+	declarations: [AppComponent],
+	imports: [
+		BrowserModule,
+		FormsModule,
+		HttpClientModule,
+		CoreModule,
+		SharedModule,
+		HomeModule,
+		TransactionModule,
+		AppRoutingModule,
+	],
+	providers: [
+		{ provide: DateFnsConfigurationService, useValue: australianDateConfig },
+	],
+	bootstrap: [
+		AppComponent,
+	],
 })
 export class AppModule { }

@@ -10,16 +10,16 @@ import { SharedModule } from '../shared/shared.module';
 import { TransactionModule } from '../transaction/transaction.module';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        SharedModule,
-        TransactionModule,
-        HomeRoutingModule,
-        DateFnsModule,
-    ],
-    declarations: [
-        HomeComponent,
-        SwitchboardComponent
-    ],
+	imports: [
+		CommonModule,
+		SharedModule,
+		TransactionModule,
+		HomeRoutingModule,
+		DateFnsModule,
+	],
+	declarations: [
+		HomeComponent,
+		SwitchboardComponent
+	],
 })
 export class HomeModule { }
