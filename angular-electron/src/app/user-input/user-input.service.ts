@@ -11,9 +11,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserInputService {
 	cleanMode$: Observable<boolean>;
 
-	cleanModeSubject = new BehaviorSubject<boolean>(false);
+	private cleanModeSubject = new BehaviorSubject<boolean>(false);
 
-	constructor() { }
+	constructor() {
+		this.cleanMode$ = this.cleanModeSubject.asObservable();
+	}
 
 	processKeyEvent(key: string) {
 		switch (key.toLowerCase()) {
@@ -27,6 +29,5 @@ export class UserInputService {
 		this.cleanModeSubject.next(!currentCleanMode);
 
 		console.log(this.cleanModeSubject.value);
-
 	}
 }

@@ -5,6 +5,7 @@ import { setSeconds } from 'date-fns';
 import { TableState } from '../models/table-state.enum';
 import { SwitchboardService } from './switchboard.service';
 import { TableStateChanged } from '../models/table-state-changed.enum';
+import { UserInputService } from '../../user-input/user-input.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,12 +22,16 @@ export class TableService {
 	private numberOfTables = 27; // TODO: Make this configurable
 
 	constructor(
-		private readonly switchboardService: SwitchboardService
+		private readonly switchboardService: SwitchboardService,
+		private readonly userInputService: UserInputService,
 	) {
-		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.switchboardService.tableStateChanged$])
+		this.tables$ = combineLatest([
+			this.tablesSubject.asObservable(),
+			this.switchboardService.tableStateChanged$,
+			this.userInputService.cleanMode$])
 			.pipe(
-				map(([tables, tableStateChanged]) => {
-					return this.processTableChanged(tables, tableStateChanged);
+				map(([tables, tableStateChanged, cleanMode]) => {
+					return this.processTableChanged(tables, tableStateChanged, cleanMode);
 				})
 			);
 
@@ -36,7 +41,7 @@ export class TableService {
 	}
 
 
-	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged): Array<Table> {
+	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged, cleanMode: boolean): Array<Table> {
 		if (!tableStateChanged) {
 			return tables;
 		}
@@ -46,7 +51,11 @@ export class TableService {
 		const tableNumberIndex = Math.ceil((hexCodeIndex + 1) / 2) - 1;
 
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
-		const tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
+		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
+
+		if (tableState === TableState.On && cleanMode) {
+			tableState = TableState.Clean;
+		}
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
