@@ -13,7 +13,7 @@ import { UserInputService } from '../../user-input/user-input.service';
 export class TableService {
 	clock$ = interval(1000)
 		.pipe(
-			map(() => new Date()),
+			map(() => { return new Date(); }),
 			share(),
 		); // TODO: Move this to a ClockService?
 	tables$: Observable<Array<Table>>;
