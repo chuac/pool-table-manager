@@ -10,6 +10,6 @@ export class TimeToCostPipe implements PipeTransform {
 		const costPerHour = 16.0; // TODO: Hardcoded cost per hour for now
 		const difference = differenceInMinutes(clockDate, value);
 
-		return difference / 60 * costPerHour;
+		return +(difference / 60 * costPerHour).toFixed(2);
 	}
 }
