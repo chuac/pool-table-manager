@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
 import { FormsModule } from '@angular/forms';
 import { TimeToCostPipe } from './pipes/time-to-cost.pipe';
@@ -15,7 +14,6 @@ import { HoursAndMinutesDifferencePipe } from './pipes/hours-and-minutes-differe
 	declarations: [
 		TimeToCostPipe,
 		HoursAndMinutesDifferencePipe,
-		PageNotFoundComponent,
 		WebviewDirective,
 	],
 	exports: [

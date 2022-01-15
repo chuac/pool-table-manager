@@ -1,3 +1,54 @@
-:host {
+@import 'variables';
 
+//:host {
+
+//}
+
+//* {
+//    border: 1px solid red
+//}
+
+$table-height: 60px;
+
+.table-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(9, $table-height);
+    grid-auto-flow: column;
+    gap: 20px;
+
+    .table {
+        display: flex;
+        background-color: $table-off;
+        border-radius: 10px;
+
+        h1, h2, h3, h4, h5 {
+            margin: 0;
+        }
+
+        & .table-number {
+            display: grid;
+            place-items: center;
+            width: $table-height;
+            }  
+
+        &.table-on {
+        background-color: $table-on;
+        border-radius: 10px;
+        color: #000000;
+
+        & .time-started {
+            display: grid;
+            place-items: center;
+        }
+        
+        & .running-cost {
+            margin-left: auto;
+            width: 100px;
+            display: grid;
+            place-items: center;
+            }
+
+        }
+    }
 }

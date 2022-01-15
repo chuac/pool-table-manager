@@ -19,7 +19,7 @@ import { TransactionModule } from '../transaction/transaction.module';
 	],
 	declarations: [
 		HomeComponent,
-        SwitchboardComponent
+		SwitchboardComponent
 	],
 })
 export class HomeModule { }

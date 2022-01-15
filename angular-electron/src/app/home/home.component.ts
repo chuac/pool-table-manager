@@ -12,13 +12,15 @@ import { SwitchboardService } from '../shared/services/switchboard.service';
 export class HomeComponent implements OnInit {
 	clock$ = this.tableService.clock$;
 	tables$ = this.tableService.tables$;
-    tableStateChanged$ = this.switchboardService.tableStateChanged$;
+	tableStateChanged$ = this.switchboardService.tableStateChanged$;
+
+	showSwitchboard = false;
 
 	tableState = TableState;
 
 	constructor(
 		private tableService: TableService,
-        private switchboardService: SwitchboardService
+		private switchboardService: SwitchboardService
 	) { }
 
 	ngOnInit(): void {
