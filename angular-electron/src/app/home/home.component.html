@@ -1,7 +1,14 @@
 <ng-container *ngIf="clock$ | async as clock">
-	<h1>
-		{{ clock | dfnsFormat: 'kk:mm:ss' }}
-	</h1>
+	<div class="header">
+		<h1>
+			{{ clock | dfnsFormat: 'kk:mm:ss' }}
+		</h1>
+
+		<ng-container *ngIf="cleanMode$ | async as cleanMode">
+			<h1>
+				Clean Mode {{cleanMode}}</h1>
+		</ng-container>
+	</div>
 
 	<div class="table-container">
 		<ng-container *ngFor="let table of (tables$ | async) as tables; index as i">
@@ -34,6 +41,7 @@
 		</ng-container>
 	</div>
 </ng-container>
+
 
 <p></p>
 <button (click)="showSwitchboard = !showSwitchboard">Toggle switchboard</button>

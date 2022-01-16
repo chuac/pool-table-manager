@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 	providedIn: 'root'
 })
 export class UserInputService {
+	cleanMode = false;
 	cleanMode$: Observable<boolean>;
 
 	private cleanModeSubject = new BehaviorSubject<boolean>(false);
@@ -24,10 +25,9 @@ export class UserInputService {
 	}
 
 	toggleCleanMode() {
-		const currentCleanMode = this.cleanModeSubject.value;
+		this.cleanMode = !this.cleanMode;
 
-		this.cleanModeSubject.next(!currentCleanMode);
-
-		console.log(this.cleanModeSubject.value);
+		//const currentCleanMode = this.cleanModeSubject.value;
+		this.cleanModeSubject.next(this.cleanMode);
 	}
 }

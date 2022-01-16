@@ -53,12 +53,12 @@ export class TableService {
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
 		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
 
-		this.userInputService.cleanMode$
-			.subscribe((cleanMode) => {
-				if (tableState === TableState.On && cleanMode) {
-					tableState = TableState.Clean;
-				}
-			});
+		//this.userInputService.cleanMode$
+		//	.subscribe((cleanMode) => {
+		if (tableState === TableState.On && this.userInputService.cleanMode) {
+			tableState = TableState.Clean;
+		}
+		//});
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
