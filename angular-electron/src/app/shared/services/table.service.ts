@@ -36,8 +36,6 @@ export class TableService {
 			);
 
 		this.addTables();
-
-		// this.initAndAddDummyDataToTables();
 	}
 
 
@@ -53,12 +51,10 @@ export class TableService {
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
 		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
 
-		//this.userInputService.cleanMode$
-		//	.subscribe((cleanMode) => {
+		// Check if in clean mode or not
 		if (tableState === TableState.On && this.userInputService.cleanMode) {
 			tableState = TableState.Clean;
 		}
-		//});
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
@@ -83,29 +79,4 @@ export class TableService {
 			this.tablesSubject.next(tables);
 		}
 	}
-
-
-	// private initAndAddDummyDataToTables(): void {
-	// 	const tables = this.tablesSubject.value;
-
-	// 	for (let i = 0; i < this.numberOfTables; i++) {
-	// 		let timeStarted: Date = null;
-	// 		let tableState = Math.random() > 0.5 ? TableState.On : TableState.Off;
-
-	// 		// Small chance for a randomly generated table to be in Clean mode
-	// 		tableState = Math.random() > 0.85 ? TableState.Clean : tableState;
-
-	// 		if (tableState !== TableState.Off) {
-	// 			const minutesStartedAgo = Math.floor(Math.random() * 240);
-	// 			timeStarted = subMinutes(new Date().setSeconds(0), minutesStartedAgo); // purposely ignoring seconds
-	// 		}
-
-	// 		tables.push({
-	// 			state: tableState,
-	// 			timeStarted,
-	// 		});
-	// 	}
-
-	// 	this.tablesSubject.next(tables);
-	// }
 }
