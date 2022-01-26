@@ -20,24 +20,58 @@ export class TableService {
 	private tablesSubject = new BehaviorSubject<Array<Table>>([]);
 
 	private numberOfTables = 27; // TODO: Make this configurable
+	private tableToTransferFrom: number;
 
 	constructor(
 		private readonly switchboardService: SwitchboardService,
 		private readonly userInputService: UserInputService,
 	) {
-		this.tables$ = combineLatest([
-			this.tablesSubject.asObservable(),
-			this.switchboardService.tableStateChanged$
-		])
+		this.tables$ = combineLatest(
+			[
+				this.tablesSubject.asObservable(),
+				this.switchboardService.tableStateChanged$
+			]
+		)
 			.pipe(
 				map(([tables, tableStateChanged]) => {
-					return this.processTableChanged(tables, tableStateChanged);
+					if (this.userInputService.transferTableMode) {
+						this.processTableTransfer(tableStateChanged);
+
+						return tables;
+					} else {
+						return this.processTableChanged(tables, tableStateChanged);
+					}
+
 				})
 			);
 
 		this.addTables();
 	}
 
+	private processTableTransfer(tableStateChanged: TableStateChanged) {
+		const hexCodeIndex = Object.values(TableStateChanged).indexOf(tableStateChanged);
+
+		const tableNumberIndex = Math.ceil((hexCodeIndex + 1) / 2) - 1;
+
+		// Check whether table is on or off, depending on its index in TableStateChanged enum
+		const tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
+
+		if (tableState === TableState.Off) {
+			if (!this.tableToTransferFrom) {
+				this.tableToTransferFrom = tableNumberIndex + 1;
+
+				// We could actually turn off the table here, not doing for now
+			} else {
+				// TODO: Alert user that they have to turn off a table in the 1st step, to transfer successfully
+			}
+		} else if (tableState === TableState.On) {
+			if (this.tableToTransferFrom) {
+				// Transfer the sessions in the customer, then swap the tables
+			} else {
+				// TODO: Alert user that they have to turn on a table in the 2nd step, to transfer successfully
+			}
+		}
+	}
 
 	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged): Array<Table> {
 		if (!tableStateChanged) {
