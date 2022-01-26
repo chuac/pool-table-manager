@@ -51,6 +51,24 @@ export class TableService {
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
 		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
 
+		if (tableState === TableState.Off && this.userInputService.transferTableMode) {
+			const tableToTransfer = tables[tableNumberIndex];
+			tableToTransfer.state = TableState.Transfer;
+
+			return tables;
+		}
+
+		if (tableState === TableState.On && this.userInputService.transferTableMode) {
+			const oldTable = tables.filter((tab) => { return tab.state === TableState.Transfer; });
+			console.log(oldTable[0].timeStarted);
+
+			const newTable = tables[tableNumberIndex];
+			newTable.state = TableState.On;
+			newTable.timeStarted = oldTable[0].timeStarted;
+
+			return tables;
+		}
+
 		// Check if in clean mode or not
 		if (tableState === TableState.On && this.userInputService.cleanMode) {
 			tableState = TableState.Clean;
@@ -60,8 +78,11 @@ export class TableService {
 		table.state = tableState;
 		table.timeStarted = setSeconds(new Date(), 0);
 
+
 		return tables;
 	}
+
+
 
 
 	private addTables(): void {

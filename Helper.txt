@@ -1,0 +1,41 @@
+C = Clean
+S = Staff
+T = Total
+F = Transfer
+L = Limit
+R = Report
+D = Discount
+V = View
+Q = Quit
+
+
+Customer = {
+nr: Number,
+currentTable: Table,
+currentSession: Session,
+
+pastSessions:[ Session ]
+}
+
+
+Table = {
+   nr: String,
+   timeStarted: Date,
+   state: TableState,
+   Scheme: Number,
+}
+
+
+Session = {
+   tableNr: Number,
+   timeStarted: Date,
+   timeEnded: Date,
+}
+
+
+Scheme = {
+   tables: Number[],
+   timeStart: 10am,
+   timeEnd: 6pm,
+   costPerHour: 12,
+}

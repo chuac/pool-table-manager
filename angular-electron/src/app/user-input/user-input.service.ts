@@ -12,7 +12,11 @@ export class UserInputService {
 	cleanMode = false;
 	cleanMode$: Observable<boolean>;
 
+	transferTableMode = false;
+	transferTableMode$: Observable<boolean>;
+
 	private cleanModeSubject = new BehaviorSubject<boolean>(false);
+	private transferTableModeSubject = new BehaviorSubject<boolean>(false);
 
 	constructor() {
 		this.cleanMode$ = this.cleanModeSubject.asObservable();
@@ -20,14 +24,23 @@ export class UserInputService {
 
 	processKeyEvent(key: string) {
 		switch (key.toLowerCase()) {
-			case 'c': this.toggleCleanMode();
+			case 'c':
+				this.toggleCleanMode();
+				break;
+			case 'f':
+				this.switchToTransferTableMode();
+				break;
 		}
 	}
 
 	toggleCleanMode() {
 		this.cleanMode = !this.cleanMode;
-
-		//const currentCleanMode = this.cleanModeSubject.value;
 		this.cleanModeSubject.next(this.cleanMode);
+	}
+
+	switchToTransferTableMode() {
+		this.transferTableMode = !this.transferTableMode;
+		this.transferTableModeSubject.next(this.transferTableMode);
+		console.log(this.transferTableMode);
 	}
 }

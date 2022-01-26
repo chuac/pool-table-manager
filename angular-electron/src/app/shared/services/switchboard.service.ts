@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TableStateChanged } from '../models/table-state-changed.enum';
 
 @Injectable({
@@ -11,9 +11,7 @@ export class SwitchboardService {
 	private tableStateChangedSubject = new BehaviorSubject<TableStateChanged>('' as TableStateChanged);
 
 	constructor() {
-		this.tableStateChanged$ = this.tableStateChangedSubject.asObservable().pipe(
-			distinctUntilChanged()
-		);
+		this.tableStateChanged$ = this.tableStateChangedSubject.asObservable();
 	}
 
 	addTableStateChanged(tableStateChanged: TableStateChanged) {
