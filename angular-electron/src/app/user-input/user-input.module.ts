@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CleanModeComponent } from './clean-mode/clean-mode.component';
 
-
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 @NgModule({
-	declarations: [],
 	imports: [
-		CommonModule
-	]
+		CommonModule,
+		MatDialogModule,
+	],
+	declarations: [
+		CleanModeComponent,
+	],
 })
 export class UserInputModule { }

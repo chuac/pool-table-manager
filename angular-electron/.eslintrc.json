@@ -6,8 +6,7 @@
     "release/**/*"
   ],
   "extends": [
-	"plugin:@typescript-eslint/recommended",
-	"plugin:@typescript-eslint/recommended-requiring-type-checking"
+	"plugin:@typescript-eslint/recommended"
   ],
   "rules": {
 	"no-inline-comments": "off",
