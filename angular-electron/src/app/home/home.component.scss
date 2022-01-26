@@ -10,6 +10,11 @@
 
 $table-height: 60px;
 
+.header {
+	display:flex;
+	justify-content: space-between;
+}
+
 .table-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -18,7 +23,7 @@ $table-height: 60px;
     gap: 20px;
 
     .table {
-        display: flex;
+		display: flex;
         background-color: $table-off;
         border-radius: 10px;
 
@@ -37,6 +42,10 @@ $table-height: 60px;
         border-radius: 10px;
         color: #000000;
 
+		&.table-clean {
+			background-color: $table-clean;
+		}
+
         & .time-started {
             display: grid;
             place-items: center;
@@ -48,7 +57,6 @@ $table-height: 60px;
             display: grid;
             place-items: center;
             }
-
         }
     }
 }

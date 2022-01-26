@@ -5,6 +5,7 @@ import { setSeconds } from 'date-fns';
 import { TableState } from '../models/table-state.enum';
 import { SwitchboardService } from './switchboard.service';
 import { TableStateChanged } from '../models/table-state-changed.enum';
+import { UserInputService } from '../../user-input/user-input.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +13,7 @@ import { TableStateChanged } from '../models/table-state-changed.enum';
 export class TableService {
 	clock$ = interval(1000)
 		.pipe(
-			map(() => new Date()),
+			map(() => { return new Date(); }),
 			share(),
 		); // TODO: Move this to a ClockService?
 	tables$: Observable<Array<Table>>;
@@ -21,9 +22,13 @@ export class TableService {
 	private numberOfTables = 27; // TODO: Make this configurable
 
 	constructor(
-		private readonly switchboardService: SwitchboardService
+		private readonly switchboardService: SwitchboardService,
+		private readonly userInputService: UserInputService,
 	) {
-		this.tables$ = combineLatest([this.tablesSubject.asObservable(), this.switchboardService.tableStateChanged$])
+		this.tables$ = combineLatest([
+			this.tablesSubject.asObservable(),
+			this.switchboardService.tableStateChanged$
+		])
 			.pipe(
 				map(([tables, tableStateChanged]) => {
 					return this.processTableChanged(tables, tableStateChanged);
@@ -31,8 +36,6 @@ export class TableService {
 			);
 
 		this.addTables();
-
-		// this.initAndAddDummyDataToTables();
 	}
 
 
@@ -46,14 +49,40 @@ export class TableService {
 		const tableNumberIndex = Math.ceil((hexCodeIndex + 1) / 2) - 1;
 
 		// Check whether table is on or off, depending on its index in TableStateChanged enum
-		const tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
+		let tableState = (hexCodeIndex + 2) % 2 === 0 ? TableState.On : TableState.Off;
+
+		if (tableState === TableState.Off && this.userInputService.transferTableMode) {
+			const tableToTransfer = tables[tableNumberIndex];
+			tableToTransfer.state = TableState.Transfer;
+
+			return tables;
+		}
+
+		if (tableState === TableState.On && this.userInputService.transferTableMode) {
+			const oldTable = tables.filter((tab) => { return tab.state === TableState.Transfer; });
+			console.log(oldTable[0].timeStarted);
+
+			const newTable = tables[tableNumberIndex];
+			newTable.state = TableState.On;
+			newTable.timeStarted = oldTable[0].timeStarted;
+
+			return tables;
+		}
+
+		// Check if in clean mode or not
+		if (tableState === TableState.On && this.userInputService.cleanMode) {
+			tableState = TableState.Clean;
+		}
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
 		table.timeStarted = setSeconds(new Date(), 0);
 
+
 		return tables;
 	}
+
+
 
 
 	private addTables(): void {
@@ -71,29 +100,4 @@ export class TableService {
 			this.tablesSubject.next(tables);
 		}
 	}
-
-
-	// private initAndAddDummyDataToTables(): void {
-	// 	const tables = this.tablesSubject.value;
-
-	// 	for (let i = 0; i < this.numberOfTables; i++) {
-	// 		let timeStarted: Date = null;
-	// 		let tableState = Math.random() > 0.5 ? TableState.On : TableState.Off;
-
-	// 		// Small chance for a randomly generated table to be in Clean mode
-	// 		tableState = Math.random() > 0.85 ? TableState.Clean : tableState;
-
-	// 		if (tableState !== TableState.Off) {
-	// 			const minutesStartedAgo = Math.floor(Math.random() * 240);
-	// 			timeStarted = subMinutes(new Date().setSeconds(0), minutesStartedAgo); // purposely ignoring seconds
-	// 		}
-
-	// 		tables.push({
-	// 			state: tableState,
-	// 			timeStarted,
-	// 		});
-	// 	}
-
-	// 	this.tablesSubject.next(tables);
-	// }
 }

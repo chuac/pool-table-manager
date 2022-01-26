@@ -1,38 +1,47 @@
 <ng-container *ngIf="clock$ | async as clock">
-    <h1>
-        {{ clock | dfnsFormat: 'kk:mm:ss' }}
-    </h1>
+	<div class="header">
+		<h1>
+			{{ clock | dfnsFormat: 'kk:mm:ss' }}
+		</h1>
 
-    <div class="table-container">
-        <ng-container *ngFor="let table of (tables$ | async) as tables; index as i">
-            <div class="table" [class.table-on]="table.state !== tableState.Off">
-                <ng-container *ngIf="table.state !== tableState.Disabled">
+		<ng-container *ngIf="cleanMode$ | async as cleanMode">
+			<h1>
+				Clean Mode {{cleanMode}}</h1>
+		</ng-container>
+	</div>
 
-                    <div class="table-number">
-                        <h1>
-                            {{ i + 1 }}
-                        </h1>
-                    </div>
+	<div class="table-container">
+		<ng-container *ngFor="let table of (tables$ | async) as tables; index as i">
+			<div class="table"
+				[ngClass]="{ 'table-on': table.state !== tableState.Off, 'table-clean': table.state === tableState.Clean }">
+				<ng-container *ngIf="table.state !== tableState.Disabled">
 
-                    <div class="time-started">
-                        <h3 *ngIf="table.state !== tableState.Off">
-                            Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} <br>
-                            {{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
-                        </h3>
-                    </div>
+					<div class="table-number">
+						<h1>
+							{{ i + 1 }}
+						</h1>
+					</div>
 
-                    <div class="running-cost">
-                        <h1 *ngIf="table.state !== tableState.Off" [class.table-on]="table.state !== tableState.Off"
-                            class="running-cost">
-                            ${{ table.timeStarted | timeToCost: clock : i + 1 }}
-                        </h1>
-                    </div>
+					<div class="time-started">
+						<h3 *ngIf="table.state === tableState.On">
+							Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} <br>
+							{{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
+						</h3>
+					</div>
 
-                </ng-container>
-            </div>
-        </ng-container>
-    </div>
+					<div class="running-cost">
+						<h1 *ngIf="table.state === tableState.On"
+							[ngClass]="{ 'table-on': table.state !== tableState.Off }" class="running-cost">
+							${{ table.timeStarted | timeToCost: clock : i + 1 }}
+						</h1>
+					</div>
+
+				</ng-container>
+			</div>
+		</ng-container>
+	</div>
 </ng-container>
+
 
 <p></p>
 <button (click)="showSwitchboard = !showSwitchboard">Toggle switchboard</button>

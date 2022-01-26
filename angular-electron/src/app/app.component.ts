@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ElectronService } from './core/services';
 import { APP_CONFIG } from '../environments/environment';
+import { UserInputService } from './user-input/user-input.service';
 
 @Component({
 	selector: 'app-root',
@@ -10,6 +11,7 @@ import { APP_CONFIG } from '../environments/environment';
 export class AppComponent {
 	constructor(
 		private electronService: ElectronService,
+		private readonly userInputService: UserInputService
 	) {
 		console.log('APP_CONFIG', APP_CONFIG);
 
@@ -21,5 +23,11 @@ export class AppComponent {
 		} else {
 			console.log('Run in browser');
 		}
+	}
+
+	@HostListener('window:keyup', ['$event'])
+	keyEvent(event: KeyboardEvent) {
+		console.log(event);
+		this.userInputService.processKeyEvent(event.key);
 	}
 }
