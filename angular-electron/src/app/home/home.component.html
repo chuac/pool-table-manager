@@ -31,7 +31,8 @@
 
 					<div class="running-cost">
 						<h1 *ngIf="table.state === tableState.On"
-							[ngClass]="{ 'table-on': table.state !== tableState.Off }" class="running-cost">
+							[ngClass]="{ 'table-on': table.state === tableState.On || table.state === tableState.Clean }"
+							class="running-cost">
 							${{ table.timeStarted | timeToCost: clock : i + 1 }}
 						</h1>
 					</div>
