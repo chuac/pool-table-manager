@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { setSeconds } from 'date-fns';
+import { differenceInMinutes, setSeconds } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { isEmpty } from 'lodash-es';
@@ -12,13 +12,11 @@ export class CustomerService {
 
 	private customersSubject = new BehaviorSubject<Array<Customer>>([]);
 
-	constructor() { }
-
-	addOrUpdateCustomer() {
-
+	constructor() {
+		this.customers$ = this.customersSubject.asObservable();
 	}
 
-	startSession(currentTableNumber: number, nextTableNumber: number, timeStarted: Date): void {
+	startOrUpdateSession(currentTableNumber: number, nextTableNumber: number, timeStarted: Date): void {
 		const customers = this.customersSubject.value;
 
 		const customerIndex = customers.findIndex((customer) => {
@@ -38,7 +36,6 @@ export class CustomerService {
 				timeStarted,
 				timeEnded: null,
 			};
-
 		} else {
 			const newCustomer: Customer = {
 				currentSession: {
@@ -55,29 +52,66 @@ export class CustomerService {
 		this.customersSubject.next(customers);
 	}
 
-	endSession(tableNumber: number, timeStarted: Date) {
-		const customers = this.customersSubject.value;
+	// endSession(tableNumber: number, timeStarted: Date) { // TODO: Not used/finalised yet
+	// 	const customers = this.customersSubject.value;
 
-		const customerFound = customers.find((customer) => {
-			return customer.currentSession.tableNumber === tableNumber;
-		});
+	// 	const customerFound = customers.find((customer) => {
+	// 		return customer.currentSession.tableNumber === tableNumber;
+	// 	});
 
-		if (customerFound) {
-			const oldSession = customerFound.currentSession;
-			oldSession.timeEnded = setSeconds(new Date(), 0);
+	// 	if (customerFound) {
+	// 		const oldSession = customerFound.currentSession;
+	// 		oldSession.timeEnded = setSeconds(new Date(), 0);
 
-			customerFound.currentSession = null;
+	// 		customerFound.currentSession = null;
 
-			customerFound.pastSessions.push(oldSession);
+	// 		customerFound.pastSessions.push(oldSession);
+	// 	}
+	// }
+
+	earliestStartDateForCustomer(tableNumber: number): Date {
+		const customer = this.customerForTableNumber(tableNumber);
+
+		if (!isEmpty(customer)) {
+			if (customer.pastSessions?.length > 0) {
+				// Assuming we always 'push' onto a Customer's Past Sessions so the first element should be the oldest
+				return customer.pastSessions[0].timeStarted;
+			} else {
+				return customer.currentSession.timeStarted;
+			}
 		}
 	}
 
-	calculateCost(tableNumber: number) {
+	runningCostForCustomer(tableNumber: number, clockDate: Date): number {
+		let totalCost = 0;
+		const costPerHour = 16.0; // TODO: Hardcoded cost per hour for now. Get it from Schemes
+
+		const customer = this.customerForTableNumber(tableNumber);
+
+		if (!isEmpty(customer)) {
+			totalCost += this.calculateCostForTimeDifference(costPerHour, customer.currentSession.timeStarted, clockDate);
+
+			if (customer.pastSessions?.length > 0) {
+				for (const session of customer.pastSessions) {
+					totalCost += this.calculateCostForTimeDifference(costPerHour, session.timeStarted, session.timeEnded);
+				}
+			}
+		}
+
+		return totalCost;
+	}
+
+	private calculateCostForTimeDifference(costPerHour: number, smallerDate: Date, largerDate: Date): number {
+		const difference = differenceInMinutes(largerDate, smallerDate);
+
+		return +(difference / 60 * costPerHour).toFixed(2); // TODO: Important: Proper rounding
+	}
+
+	private customerForTableNumber(tableNumber: number): Customer {
 		const customers = this.customersSubject.value;
 
-		const customerFound = customers.find((customer) => {
+		return customers.find((customer) => {
 			return customer.currentSession.tableNumber === tableNumber;
 		});
-
 	}
 }

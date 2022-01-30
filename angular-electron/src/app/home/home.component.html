@@ -24,8 +24,8 @@
 
 					<div class="time-started">
 						<h3 *ngIf="table.state === tableState.On">
-							Time started: {{ table.timeStarted | dfnsFormat: 'kk:mm' }} <br>
-							{{ table.timeStarted | hoursAndMinutesDifference: clock }} ago
+							Time started: {{ i + 1 | earliestStartDateForCustomer | dfnsFormat: 'kk:mm' }} <br>
+							{{ i + 1 | earliestStartDateForCustomer | hoursAndMinutesDifference: clock }} ago
 						</h3>
 					</div>
 
@@ -33,7 +33,7 @@
 						<h1 *ngIf="table.state === tableState.On"
 							[ngClass]="{ 'table-on': table.state === tableState.On || table.state === tableState.Clean }"
 							class="running-cost">
-							${{ table.timeStarted | timeToCost: clock : i + 1 }}
+							${{ i + 1 | timeToCost: clock }}
 						</h1>
 					</div>
 

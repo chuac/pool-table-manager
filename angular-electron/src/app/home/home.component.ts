@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TableState } from '../shared/models/table-state.enum';
 import { SwitchboardService } from '../shared/services/switchboard.service';
 import { UserInputService } from '../user-input/user-input.service';
+import { CustomerService } from '../shared/services/customer.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-home',
@@ -21,12 +23,21 @@ export class HomeComponent implements OnInit {
 	tableState = TableState;
 
 	constructor(
-		private tableService: TableService,
-		private switchboardService: SwitchboardService,
-		private userInputService: UserInputService
+		private readonly tableService: TableService,
+		private readonly switchboardService: SwitchboardService,
+		private readonly userInputService: UserInputService,
+		private readonly customerService: CustomerService,
 	) { }
 
 	ngOnInit(): void {
 		console.log('HomeComponent INIT');
+
+		this.customerService.customers$
+			.pipe(
+				tap((customers) => {
+					console.log(customers); // TODO: Just to peek into Customers to debug. Remove whenever
+				})
+			)
+			.subscribe();
 	}
 }

@@ -6,6 +6,7 @@ import { TableState } from '../models/table-state.enum';
 import { SwitchboardService } from './switchboard.service';
 import { TableStateChanged } from '../models/table-state-changed.enum';
 import { UserInputService } from '../../user-input/user-input.service';
+import { CustomerService } from './customer.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -25,6 +26,7 @@ export class TableService {
 	constructor(
 		private readonly switchboardService: SwitchboardService,
 		private readonly userInputService: UserInputService,
+		private readonly customerService: CustomerService,
 	) {
 		this.tables$ = combineLatest(
 			[
@@ -35,9 +37,7 @@ export class TableService {
 			.pipe(
 				map(([tables, tableStateChanged]) => {
 					if (this.userInputService.transferTableMode) {
-						this.processTableTransfer(tableStateChanged);
-
-						return tables;
+						return this.processTableTransfer(tables, tableStateChanged);
 					} else {
 						return this.processTableChanged(tables, tableStateChanged);
 					}
@@ -48,7 +48,7 @@ export class TableService {
 		this.addTables();
 	}
 
-	private processTableTransfer(tableStateChanged: TableStateChanged) {
+	private processTableTransfer(tables: Array<Table>, tableStateChanged: TableStateChanged): Array<Table> {
 		const hexCodeIndex = Object.values(TableStateChanged).indexOf(tableStateChanged);
 
 		const tableNumberIndex = Math.ceil((hexCodeIndex + 1) / 2) - 1;
@@ -63,14 +63,31 @@ export class TableService {
 				// We could actually turn off the table here, not doing for now
 			} else {
 				// TODO: Alert user that they have to turn off a table in the 1st step, to transfer successfully
+				console.log('Alert user that they have to turn off a table in the 1st step, to transfer successfully');
 			}
 		} else if (tableState === TableState.On) {
 			if (this.tableToTransferFrom) {
-				// Transfer the sessions in the customer, then swap the tables
+				const dateNow = setSeconds(new Date(), 0);
+
+				// In the customer: end current session, and start a new one
+				this.customerService.startOrUpdateSession(this.tableToTransferFrom, tableNumberIndex + 1, dateNow);
+
+				// Swap the tables
+				tables[this.tableToTransferFrom - 1].state = TableState.Off;
+				tables[this.tableToTransferFrom - 1].timeStarted = null;
+
+				tables[tableNumberIndex].state = TableState.On;
+				tables[tableNumberIndex].timeStarted = dateNow;
+
+				// Reset our helper property
+				this.tableToTransferFrom = null;
 			} else {
 				// TODO: Alert user that they have to turn on a table in the 2nd step, to transfer successfully
+				console.log('Alert user that they have to turn on a table in the 2nd step, to transfer successfully');
 			}
 		}
+
+		return tables;
 	}
 
 	private processTableChanged(tables: Array<Table>, tableStateChanged: TableStateChanged): Array<Table> {
@@ -106,12 +123,14 @@ export class TableService {
 		// Check if in clean mode or not
 		if (tableState === TableState.On && this.userInputService.cleanMode) {
 			tableState = TableState.Clean;
+		} else {
+			// Create or update a Customer
+			this.customerService.startOrUpdateSession(null, tableNumberIndex + 1, setSeconds(new Date(), 0));
 		}
 
 		const table = tables[tableNumberIndex];
 		table.state = tableState;
 		table.timeStarted = setSeconds(new Date(), 0);
-
 
 		return tables;
 	}
