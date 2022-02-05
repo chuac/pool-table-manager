@@ -5,7 +5,10 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import * as ElectronStore from 'electron-store';
 import * as SerialPort from 'serialport';
+import { Schema } from 'electron-store';
+import { SettingsDb } from '../../../database/models/settings-db.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,6 +18,8 @@ export class ElectronService {
 	webFrame: typeof webFrame;
 	childProcess: typeof childProcess;
 	fs: typeof fs;
+	electronStore: typeof ElectronStore;
+	settingsDb: ElectronStore;
 	serialPort: typeof SerialPort;
 
 	constructor() {
@@ -25,6 +30,10 @@ export class ElectronService {
 
 			this.childProcess = window.require('child_process');
 			this.fs = window.require('fs');
+
+			this.electronStore = window.require('electron-store');
+			this.setupDatabases();
+
 			this.serialPort = window.require('serialport');
 
 			this.serialPort.list().then(ports => {
@@ -41,8 +50,7 @@ export class ElectronService {
 						desiredPort[0].path, { baudRate: 9600 }
 					);
 
-					port.on('data', (data) =>
-						console.log('Data:', Buffer.from(data, 'hex').toString('hex'))
+					port.on('data', (data) => { return console.log('Data:', Buffer.from(data, 'hex').toString('hex')); }
 					);
 				} else {
 					console.log('MORE THAN ONE "ELIGIBLE" COM PORT WAS FOUND');
@@ -65,5 +73,23 @@ export class ElectronService {
 
 	get isElectron(): boolean {
 		return !!(window && window.process && window.process.type);
+	}
+
+	private setupDatabases(): void {
+		const settingsDbSchema: Schema<SettingsDb> = {
+			port: {
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					}
+				}
+			}
+		};
+
+		this.settingsDb = new this.electronStore({
+			name: 'settings',
+			schema: settingsDbSchema as Record<string, unknown>,
+		});
 	}
 }
