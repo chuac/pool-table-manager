@@ -1,3 +1,4 @@
+import { ElectronService } from './../core/services/electron/electron.service';
 import { TableService } from './../shared/services/table.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TableState } from '../shared/models/table-state.enum';
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
 		private readonly switchboardService: SwitchboardService,
 		private readonly userInputService: UserInputService,
 		private readonly customerService: CustomerService,
+		private readonly electronService: ElectronService,
 	) { }
 
 	ngOnInit(): void {
@@ -39,5 +41,9 @@ export class HomeComponent implements OnInit {
 				})
 			)
 			.subscribe();
+
+		console.log(`Port.path before setting: ${this.electronService.settingsDb.get('port.path')}`);
+		this.electronService.settingsDb.set('port.path', new Date().getSeconds().toString());
+		console.log(`Port.path after setting: ${this.electronService.settingsDb.get('port.path')}`);
 	}
 }
