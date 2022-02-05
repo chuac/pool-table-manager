@@ -5,6 +5,7 @@ import { WebviewDirective } from './directives/';
 import { FormsModule } from '@angular/forms';
 import { TimeToCostPipe } from './pipes/time-to-cost.pipe';
 import { HoursAndMinutesDifferencePipe } from './pipes/hours-and-minutes-difference.pipe';
+import { EarliestStartDateForCustomerPipe } from './pipes/earliest-start-date-for-customer.pipe';
 
 @NgModule({
 	imports: [
@@ -14,11 +15,13 @@ import { HoursAndMinutesDifferencePipe } from './pipes/hours-and-minutes-differe
 	declarations: [
 		TimeToCostPipe,
 		HoursAndMinutesDifferencePipe,
+		EarliestStartDateForCustomerPipe,
 		WebviewDirective,
 	],
 	exports: [
 		TimeToCostPipe,
 		HoursAndMinutesDifferencePipe,
+		EarliestStartDateForCustomerPipe,
 		WebviewDirective,
 		FormsModule,
 	],
