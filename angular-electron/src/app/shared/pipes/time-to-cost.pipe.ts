@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { MathHelper } from '../helpers/math.helper';
 import { CustomerService } from '../services/customer.service';
 
 @Pipe({
@@ -9,7 +10,11 @@ export class TimeToCostPipe implements PipeTransform {
 		private readonly customerService: CustomerService,
 	) { }
 
-	transform(tableNumber: number, clockDate: Date): number {
-		return this.customerService.runningCostForCustomer(tableNumber, clockDate);
+	transform(tableNumber: number, clockDate: Date): string {
+		const cost = this.customerService.runningCostForCustomer(tableNumber, clockDate);
+
+		const roundedDownCost = MathHelper.roundDownToNearestTenCents(cost);
+
+		return roundedDownCost.toFixed(2);
 	}
 }
