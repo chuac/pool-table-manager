@@ -19,7 +19,6 @@ export class TableService {
 		); // TODO: Move this to a ClockService?
 	tables$: Observable<Array<Table>>;
 	private tablesSubject = new BehaviorSubject<Array<Table>>([]);
-
 	private numberOfTables = 27; // TODO: Make this configurable
 	private tableToTransferFrom: number;
 
@@ -121,8 +120,13 @@ export class TableService {
 		}
 
 		// Check if in clean mode or not
-		if (tableState === TableState.On && this.userInputService.cleanMode) {
-			tableState = TableState.Clean;
+		if (this.userInputService.cleanMode) {
+			if (tableState === TableState.On) {
+				tableState = TableState.Clean;
+			}
+		} else if (tableState === TableState.Off) {
+			// End session for a Customer
+			this.customerService.endSession(tableNumberIndex + 1, setSeconds(new Date(), 0));
 		} else {
 			// Create or update a Customer
 			this.customerService.startOrUpdateSession(null, tableNumberIndex + 1, setSeconds(new Date(), 0));

@@ -27,7 +27,7 @@ export class CustomerService {
 			const oldSession = customers[customerIndex].currentSession;
 
 			if (!isEmpty(oldSession)) {
-				oldSession.timeEnded = setSeconds(new Date(), 0);
+				oldSession.timeEnded = setSeconds(new Date(), 0); // The consumer may already be setting seconds to 0 but do it again anyway
 				customers[customerIndex].pastSessions.push(oldSession);
 			}
 
@@ -52,22 +52,24 @@ export class CustomerService {
 		this.customersSubject.next(customers);
 	}
 
-	// endSession(tableNumber: number, timeStarted: Date) { // TODO: Not used/finalised yet
-	// 	const customers = this.customersSubject.value;
+	endSession(currentTableNumber: number, timeEnded: Date) {
+		const customers = this.customersSubject.value;
 
-	// 	const customerFound = customers.find((customer) => {
-	// 		return customer.currentSession.tableNumber === tableNumber;
-	// 	});
+		const customerIndex = customers.findIndex((customer) => {
+			return customer.currentSession.tableNumber === currentTableNumber;
+		});
 
-	// 	if (customerFound) {
-	// 		const oldSession = customerFound.currentSession;
-	// 		oldSession.timeEnded = setSeconds(new Date(), 0);
+		if (customerIndex !== -1) {
+			const oldSession = customers[customerIndex].currentSession;
+			oldSession.timeEnded = setSeconds(timeEnded, 0); // The consumer may already be setting seconds to 0 but do it again anyway
 
-	// 		customerFound.currentSession = null;
+			customers[customerIndex].currentSession = null;
 
-	// 		customerFound.pastSessions.push(oldSession);
-	// 	}
-	// }
+			customers[customerIndex].pastSessions.push(oldSession);
+
+			this.customersSubject.next(customers);
+		}
+	}
 
 	earliestStartDateForCustomer(tableNumber: number): Date {
 		const customer = this.customerForTableNumber(tableNumber);
