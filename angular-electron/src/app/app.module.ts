@@ -15,12 +15,13 @@ import { TransactionModule } from './transaction/transaction.module';
 import { UserInputModule } from './user-input/user-input.module';
 
 import { AppComponent } from './app.component';
+import { BaseDialogComponent } from './base-dialog/base-dialog.component';
 
 const australianDateConfig = new DateFnsConfigurationService();
 australianDateConfig.setLocale(enAU);
 
 @NgModule({
-	declarations: [AppComponent],
+	declarations: [AppComponent, BaseDialogComponent],
 	imports: [
 		BrowserModule,
 		FormsModule,
