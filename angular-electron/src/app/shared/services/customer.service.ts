@@ -3,6 +3,9 @@ import { differenceInMinutes, setSeconds } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { isEmpty } from 'lodash-es';
+import { DiscountService } from '../../discount/discount.service';
+import { RunningCost } from '../models/running-cost';
+import { MathHelper } from '../helpers/math.helper';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +15,9 @@ export class CustomerService {
 
 	private customersSubject = new BehaviorSubject<Array<Customer>>([]);
 
-	constructor() {
+	constructor(
+		private readonly discountService: DiscountService,
+	) {
 		this.customers$ = this.customersSubject.asObservable();
 	}
 
@@ -44,6 +49,7 @@ export class CustomerService {
 					timeEnded: null,
 				},
 				pastSessions: [],
+				discount: null,
 			};
 
 			customers.push(newCustomer);
@@ -84,11 +90,19 @@ export class CustomerService {
 		}
 	}
 
-	runningCostForCustomer(tableNumber: number, clockDate: Date): number {
+	runningCostForTableNumber(tableNumber: number, clockDate: Date): RunningCost {
+		const customer = this.customerForTableNumber(tableNumber);
+
+		if (!isEmpty(customer)) {
+			return this.runningCostForCustomer(customer, clockDate);
+		}
+
+		return null;
+	}
+
+	private runningCostForCustomer(customer: Customer, clockDate: Date): RunningCost { // TODO: Maybe move this func somewhere else
 		let totalCost = 0;
 		const costPerHour = 16.0; // TODO: Hardcoded cost per hour for now. Get it from Schemes
-
-		const customer = this.customerForTableNumber(tableNumber);
 
 		if (!isEmpty(customer)) {
 			totalCost += this.calculateCostForTimeDifference(costPerHour, customer.currentSession.timeStarted, clockDate);
@@ -100,7 +114,13 @@ export class CustomerService {
 			}
 		}
 
-		return totalCost;
+		totalCost = MathHelper.roundDownToNearestTenCents(totalCost);
+		const discountAmount = this.discountService.calcDiscount(totalCost, customer);
+
+		return {
+			totalWithoutDiscount: totalCost,
+			discountAmount
+		};
 	}
 
 	private calculateCostForTimeDifference(costPerHour: number, smallerDate: Date, largerDate: Date): number {
