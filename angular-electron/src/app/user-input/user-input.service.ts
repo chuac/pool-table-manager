@@ -33,9 +33,13 @@ export class UserInputService {
 				this.switchToTransferTableMode();
 				break;
 			case 'enter':
-				if (this.router.url === '/welcome') this.router.navigate(['home'])
+				this.processEnterKey();
 
 		}
+	}
+
+	private processEnterKey() {
+		if (this.router.url === '/welcome') this.router.navigate(['main'])
 	}
 
 	toggleCleanMode() {

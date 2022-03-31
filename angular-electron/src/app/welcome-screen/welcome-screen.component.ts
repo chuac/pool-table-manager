@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInputService } from '../user-input/user-input.service';
+import { TableService } from '../shared/services/table.service';
 
 @Component({
 	selector: 'app-welcome-screen',
@@ -7,8 +7,11 @@ import { UserInputService } from '../user-input/user-input.service';
 	styleUrls: ['./welcome-screen.component.scss']
 })
 export class WelcomeScreenComponent implements OnInit {
+	clock$ = this.tableService.clock$;
 
-	constructor(private readonly userInputService: UserInputService) {
+	constructor(
+		private readonly tableService: TableService,
+	) {
 
 	}
 

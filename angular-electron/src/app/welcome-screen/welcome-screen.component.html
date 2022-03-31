@@ -1,2 +1,3 @@
-<button (click)="goToMainPage('enter
-')">welcome-screen works!</button>
+<ng-container *ngIf="clock$ | async as clock">
+	{{ clock | dfnsFormat: 'kk:mm:ss' }}
+</ng-container>

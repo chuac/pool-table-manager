@@ -16,12 +16,13 @@ import { UserInputModule } from './user-input/user-input.module';
 
 import { AppComponent } from './app.component';
 import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.component';
+import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
 
 const australianDateConfig = new DateFnsConfigurationService();
 australianDateConfig.setLocale(enAU);
 
 @NgModule({
-	declarations: [AppComponent, WelcomeScreenComponent],
+	declarations: [AppComponent],
 	imports: [
 		BrowserModule,
 		FormsModule,
@@ -30,6 +31,7 @@ australianDateConfig.setLocale(enAU);
 		BrowserAnimationsModule,
 		SharedModule,
 		HomeModule,
+		WelcomeScreenModule,
 		TransactionModule,
 		UserInputModule,
 		AppRoutingModule,
