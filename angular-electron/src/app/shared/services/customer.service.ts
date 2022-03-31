@@ -25,7 +25,7 @@ export class CustomerService {
 		const customers = this.customersSubject.value;
 
 		const customerIndex = customers.findIndex((customer) => {
-			return customer.currentSession.tableNumber === currentTableNumber;
+			return customer.currentSession?.tableNumber === currentTableNumber;
 		});
 
 		if (customerIndex !== -1) {
@@ -62,7 +62,7 @@ export class CustomerService {
 		const customers = this.customersSubject.value;
 
 		const customerIndex = customers.findIndex((customer) => {
-			return customer.currentSession.tableNumber === currentTableNumber;
+			return customer.currentSession?.tableNumber === currentTableNumber;
 		});
 
 		if (customerIndex !== -1) {
@@ -133,7 +133,7 @@ export class CustomerService {
 		const customers = this.customersSubject.value;
 
 		return customers.find((customer) => {
-			return customer.currentSession.tableNumber === tableNumber;
+			return customer.currentSession?.tableNumber === tableNumber;
 		});
 	}
 }

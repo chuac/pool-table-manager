@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CleanModeComponent } from './clean-mode/clean-mode.component';
+import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +19,7 @@ export class UserInputService {
 
 	constructor(
 		private dialog: MatDialog,
+		private router: Router
 	) {
 		this.cleanMode$ = this.cleanModeSubject.asObservable();
 	}
@@ -30,6 +32,9 @@ export class UserInputService {
 			case 'f':
 				this.switchToTransferTableMode();
 				break;
+			case 'enter':
+				if (this.router.url === '/welcome') this.router.navigate(['home'])
+
 		}
 	}
 
